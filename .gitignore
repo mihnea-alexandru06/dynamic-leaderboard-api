@@ -33,5 +33,17 @@ out/
 /nbdist/
 /.nb-gradle/
 
+### Certificates / keys ###
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.key
+*.crt
+*.pem
+
+### .env ###
+.env
+
 ### VS Code ###
 .vscode/

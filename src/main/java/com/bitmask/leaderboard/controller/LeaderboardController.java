@@ -8,6 +8,7 @@ import com.bitmask.leaderboard.service.LeaderboardService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,16 +30,22 @@ public class LeaderboardController {
         leaderboardService.updateScore(request);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/{gameId}/top")
     public List<LeaderboardEntryDto> getTop(
             @PathVariable @NotBlank String gameId,
             @RequestParam(defaultValue = "GLOBAL") LeaderboardType type,
             @RequestParam(defaultValue = "10") int limit
     ) {
+        if (limit > 100) {
+            throw new IllegalArgumentException("limit must be <= 100");
+        }
+
         GameKey key = new GameKey(gameId, type);
         return leaderboardService.getTopPlayers(key, limit);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/{gameId}/rank/{playerId}")
     public LeaderboardEntryDto getPlayerRank(
             @PathVariable @NotBlank String gameId,

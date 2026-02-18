@@ -9,7 +9,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.time.Instant;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public final class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ApiError> handleNotFound(NotFoundException ex) {
@@ -40,6 +40,18 @@ public class GlobalExceptionHandler {
                         HttpStatus.BAD_REQUEST.value(),
                         HttpStatus.BAD_REQUEST.name(),
                         "Invalid value for parameter '" + ex.getName() + "'",
+                        Instant.now()
+                )
+        );
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiError> handleIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(
+                new ApiError(
+                        HttpStatus.BAD_REQUEST.value(),
+                        HttpStatus.BAD_REQUEST.name(),
+                        ex.getMessage(),
                         Instant.now()
                 )
         );

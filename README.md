@@ -76,7 +76,6 @@ This creates a leaderboard where players try to guess a number closest to `500.0
     "name": "CLOSE_TO_X",
     "target": 500.0
   },
-  "target": 500.0,
   "formula": {
     "expression": "#guess",
     "variables": ["guess"]

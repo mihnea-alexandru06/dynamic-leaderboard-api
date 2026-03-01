@@ -1,6 +1,19 @@
 version: "3.9"
 
 services:
+  leaderboard-api:
+    build: .
+    container_name: leaderboard-api
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+    depends_on:
+      - redis
+    networks:
+      - leaderboard-network
+
   redis:
     image: redis:7
     container_name: leaderboard-redis
@@ -12,5 +25,12 @@ services:
       redis-server
       --appendonly yes
       --appendfsync everysec
+    networks:
+      - leaderboard-network
+
+networks:
+  leaderboard-network:
+    driver: bridge
+
 volumes:
   redis-data:

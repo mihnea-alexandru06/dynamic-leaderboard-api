@@ -1,4 +1,4 @@
-package com.bitmask.leaderboard.security;
+package com.bitmask.leaderboard.security.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,24 +25,17 @@ public final class ApiKeyFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String authHeader = request.getHeader(AUTH_HEADER_PREFIX);
 
-        if (authHeader == null || !authHeader.startsWith(PREFIX)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing API key");
-            return;
+        if (authHeader != null && authHeader.startsWith(PREFIX)) {
+            String requestKey = authHeader.substring(PREFIX.length());
+
+            if (validApiKey.equals(requestKey)) {
+                var auth = new UsernamePasswordAuthenticationToken(
+                        "server",
+                        null,
+                        List.of());
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
         }
-
-        String requestKey = authHeader.substring(PREFIX.length());
-
-        if (!validApiKey.equals(requestKey)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API key");
-            return;
-        }
-
-        var auth = new UsernamePasswordAuthenticationToken(
-                "server",
-                null,
-                List.of()
-        );
-        SecurityContextHolder.getContext().setAuthentication(auth);
 
         filterChain.doFilter(request, response);
     }

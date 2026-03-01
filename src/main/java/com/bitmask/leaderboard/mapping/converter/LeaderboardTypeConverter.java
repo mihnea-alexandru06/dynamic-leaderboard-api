@@ -1,6 +1,6 @@
-package com.bitmask.leaderboard.converter;
+package com.bitmask.leaderboard.mapping.converter;
 
-import com.bitmask.leaderboard.domain.LeaderboardType;
+import com.bitmask.leaderboard.domain.leaderboard.LeaderboardType;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

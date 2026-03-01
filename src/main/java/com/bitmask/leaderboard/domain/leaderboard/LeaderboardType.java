@@ -1,4 +1,4 @@
-package com.bitmask.leaderboard.domain;
+package com.bitmask.leaderboard.domain.leaderboard;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -24,8 +24,6 @@ public enum LeaderboardType {
         }
     };
 
-    public abstract String getSuffix(LocalDate now);
-
     public static LeaderboardType fromString(String value) {
         if (value == null) {
             return GLOBAL;
@@ -38,4 +36,6 @@ public enum LeaderboardType {
             );
         }
     }
+
+    public abstract String getSuffix(LocalDate now);
 }
